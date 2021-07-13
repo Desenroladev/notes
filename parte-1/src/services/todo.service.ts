@@ -7,44 +7,29 @@ class TodoService {
         this.db = new Database();
     }
     async findAll() : Promise<TodoModel[]> {
-        let connection: Connection = null;
-        try {
-            const sql = `select 
-                            id, 
-                            title, 
-                            created_at,
-                            concluded,
-                            concluded_at
-                        from todo`;
-            const todos: TodoModel[] = await this.db.query<TodoModel>(sql);
-            return todos 
-        } catch(err) {
-            if(connection) {
-                await connection.rollback();
-            }
-            throw err;
-        }
-
+        const sql = `select 
+                        id, 
+                        title, 
+                        created_at,
+                        concluded,
+                        concluded_at
+                    from todo`;
+        return await this.db.query<TodoModel>(sql);
     }
 
     async findById(id: string) : Promise<TodoModel> {
-        let connection: Connection = null;
-        try {
-            const sql = `select 
-                            id, 
-                            title, 
-                            created_at,
-                            concluded,
-                            concluded_at
-                        from todo
-                        where id = $1`;
-            return await this.db.find<TodoModel>(sql, [id]);
-        } catch(err) {
-            throw err;
-        }
+        const sql = `select 
+                        id, 
+                        title, 
+                        created_at,
+                        concluded,
+                        concluded_at
+                    from todo
+                    where id = $1`;
+        return await this.db.find<TodoModel>(sql, [id]);
     }
 
-    async create (model: TodoModel) : Promise<TodoModel>{
+    async create (model: TodoModel) : Promise<TodoModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
