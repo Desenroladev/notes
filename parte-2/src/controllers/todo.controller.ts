@@ -20,7 +20,7 @@ class TodoController {
         const todo = await this.service.findById(id);
 
         if(!todo) {
-            res.status(404).send('Todo is not found.');
+            return res.status(404).send('Todo is not found.');
         }
 
         res.json(todo);
@@ -36,7 +36,7 @@ class TodoController {
         const todo = await this.service.update(id, req.body);
 
         if(!todo) {
-            res.status(404).send('Todo is not found.');
+            return res.status(404).send('Todo is not found.');
         }
 
         res.json(todo);
@@ -47,7 +47,7 @@ class TodoController {
         const todo = await this.service.delete(id);
 
         if(!todo) {
-            res.status(404).send('Todo is not found.');
+            return res.status(404).send('Todo is not found.');
         }
 
         res.json(todo);

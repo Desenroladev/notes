@@ -3,9 +3,11 @@ import { Connection, Database } from "@desenroladev/pg";
 
 class TodoService {
     private db: Database;
+
     constructor() {
         this.db = new Database();
     }
+
     async findAll() : Promise<TodoModel[]> {
         const sql = `select 
                         id, 

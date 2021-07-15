@@ -36,9 +36,9 @@ class TodoService {
         try {
             connection = await this.db.transaction();
             const binds = [
-                model.title
+                JSON.stringify(model)
             ];
-            const sql = `insert into todo(title) values($1) returning *`;
+            const sql = `select t.* from public.dmlapi_todo_merge($1::jsonb) t`;
             const todo: TodoModel = await connection.execute<TodoModel>(sql, binds);
             await connection.commit();
             return todo;
@@ -54,21 +54,12 @@ class TodoService {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const sql = `update todo 
-                                set id = $1,
-                                    title = $2,
-                                    concluded = $3,
-                                    concluded_at = $4
-                            where id = $5 
-                            returning *`;
+            const sql = `select t.* from public.dmlapi_todo_merge($1::jsonb) t`;
             const binds = [
-                model.id,
-                model.title,
-                model.concluded,
-                model.concluded_at,
-                id
+                JSON.stringify(model)
             ];
             const todo: TodoModel = await connection.find<TodoModel>(sql, binds);
+            console.log(todo)
             await connection.commit();
             return todo;
         } catch(err) {
@@ -83,11 +74,13 @@ class TodoService {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const sql = `delete from todo 
-                            where id = $1 
-                            returning *`;
+            const sql = `select t.* from public.dmlapi_todo_purge(fv_id => $1) t`;
             const todo = await connection.execute<TodoModel>(sql, [id]);
             await connection.commit();
+
+            if(!todo?.id) {
+                return null;
+            }
             return todo;
         } catch(err) {
             if(connection) {
