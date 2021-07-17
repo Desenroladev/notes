@@ -27,18 +27,18 @@ class TodoService {
                         concluded,
                         concluded_at
                     from todo
-                    where id = $1`;
-        return await this.db.find<TodoModel>(sql, [id]);
+                    where id = :id`;
+        return await this.db.find<TodoModel>(sql, {id});
     }
 
     async create (model: TodoModel) : Promise<TodoModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const binds = [
-                JSON.stringify(model)
-            ];
-            const sql = `select t.* from public.dmlapi_todo_merge($1::jsonb) t`;
+            const binds = {
+                payload: model
+            };
+            const sql = `select t.* from public.dmlapi_todo_merge(:payload::jsonb) t`;
             const todo: TodoModel = await connection.execute<TodoModel>(sql, binds);
             await connection.commit();
             return todo;
@@ -54,12 +54,12 @@ class TodoService {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const sql = `select t.* from public.dmlapi_todo_merge($1::jsonb) t`;
-            const binds = [
-                JSON.stringify(model)
-            ];
+            model.id = id;
+            const sql = `select t.* from public.dmlapi_todo_merge(:payload::jsonb) t`;
+            const binds = {
+                payload: model
+            };
             const todo: TodoModel = await connection.find<TodoModel>(sql, binds);
-            console.log(todo)
             await connection.commit();
             return todo;
         } catch(err) {
@@ -74,8 +74,8 @@ class TodoService {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const sql = `select t.* from public.dmlapi_todo_purge(fv_id => $1) t`;
-            const todo = await connection.execute<TodoModel>(sql, [id]);
+            const sql = `select t.* from public.dmlapi_todo_purge(fv_id => :id) t`;
+            const todo = await connection.execute<TodoModel>(sql, {id});
             await connection.commit();
 
             if(!todo?.id) {
