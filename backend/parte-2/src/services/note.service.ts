@@ -1,47 +1,49 @@
-import TodoModel from "../models/todo.model";
+import NoteModel from "../models/note.model";
 import { Connection, Database } from "@desenroladev/pg";
 
-class TodoService {
+class NoteService {
     private db: Database;
 
     constructor() {
         this.db = new Database();
     }
 
-    async findAll() : Promise<TodoModel[]> {
+    async findAll() : Promise<NoteModel[]> {
         const sql = `select 
                         id, 
                         title, 
+                        description,
+                        image,
                         created_at,
-                        concluded,
-                        concluded_at
-                    from todo`;
-        return await this.db.query<TodoModel>(sql);
+                        updated_at
+                    from notes`;
+        return await this.db.query<NoteModel>(sql);
     }
 
-    async findById(id: string) : Promise<TodoModel> {
+    async findById(id: string) : Promise<NoteModel> {
         const sql = `select 
                         id, 
                         title, 
+                        description,
+                        image,
                         created_at,
-                        concluded,
-                        concluded_at
-                    from todo
+                        updated_at
+                    from notes
                     where id = :id`;
-        return await this.db.find<TodoModel>(sql, {id});
+        return await this.db.find<NoteModel>(sql, {id});
     }
 
-    async create (model: TodoModel) : Promise<TodoModel> {
+    async create (model: NoteModel) : Promise<NoteModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
             const binds = {
                 payload: model
             };
-            const sql = `select t.* from public.dmlapi_todo_merge(:payload::jsonb) t`;
-            const todo: TodoModel = await connection.execute<TodoModel>(sql, binds);
+            const sql = `select t.* from public.dmlapi_notes_merge(:payload::jsonb) t`;
+            const note: NoteModel = await connection.execute<NoteModel>(sql, binds);
             await connection.commit();
-            return todo;
+            return note;
         } catch(err) {
             if(connection) {
                 await connection.rollback();
@@ -50,18 +52,18 @@ class TodoService {
         }
     }
 
-    async update(id: string, model: TodoModel) : Promise<TodoModel> {
+    async update(id: string, model: NoteModel) : Promise<NoteModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
             model.id = id;
-            const sql = `select t.* from public.dmlapi_todo_merge(:payload::jsonb) t`;
+            const sql = `select t.* from public.dmlapi_notes_merge(:payload::jsonb) t`;
             const binds = {
                 payload: model
             };
-            const todo: TodoModel = await connection.find<TodoModel>(sql, binds);
+            const note: NoteModel = await connection.find<NoteModel>(sql, binds);
             await connection.commit();
-            return todo;
+            return note;
         } catch(err) {
             if(connection) {
                 await connection.rollback();
@@ -70,18 +72,18 @@ class TodoService {
         }
     }
 
-    async delete(id: string) : Promise<TodoModel> {
+    async delete(id: string) : Promise<NoteModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const sql = `select t.* from public.dmlapi_todo_purge(fv_id => :id) t`;
-            const todo = await connection.execute<TodoModel>(sql, {id});
+            const sql = `select t.* from public.dmlapi_notes_purge(fv_id => :id) t`;
+            const note = await connection.execute<NoteModel>(sql, {id});
             await connection.commit();
 
-            if(!todo?.id) {
+            if(!note?.id) {
                 return null;
             }
-            return todo;
+            return note;
         } catch(err) {
             if(connection) {
                 await connection.rollback();
@@ -92,4 +94,4 @@ class TodoService {
 
 }
 
-export default TodoService;
+export default NoteService;

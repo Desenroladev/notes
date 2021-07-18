@@ -1,6 +1,6 @@
 
-create or replace function public.dmlapi_todo_r2j(
-    fr_data public.todo
+create or replace function public.dmlapi_notes_r2j(
+    fr_data public.notes
 )
     returns jsonb
     language plpgsql
@@ -10,7 +10,7 @@ AS $function$
 -- (c) Copyright 2021 Antoniel Lima (antonielliimma@gmail.com)
 -- (c) Copyright 2021 desenroladev.com.br
 ------------------------------------------------------------------
--- public.todo: record to jsonb
+-- public.notes: record to jsonb
 ------------------------------------------------------------------
 declare
     lv_jsonb jsonb;

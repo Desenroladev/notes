@@ -1,10 +1,10 @@
 {
-  "name": "todo",
+  "name": "Notes",
   "version": "1.0.0",
-  "description": "Todo List",
+  "description": "Simple Notes List",
   "main": "index.js",
   "scripts": {
-    "start:dev": "TZ=America/Sao_Paulo ts-node-dev src/index.ts "
+    "start:dev": "ts-node-dev src/index.ts "
   },
   "author": "Antoniel Lima",
   "license": "ISC",

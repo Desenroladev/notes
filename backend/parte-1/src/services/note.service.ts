@@ -1,47 +1,50 @@
-import TodoModel from "../models/todo.model";
+import NoteModel from "../models/note.model";
 import { Connection, Database } from "@desenroladev/pg";
 
-class TodoService {
+class NoteService {
     private db: Database;
 
     constructor() {
         this.db = new Database();
     }
 
-    async findAll() : Promise<TodoModel[]> {
+    async findAll() : Promise<NoteModel[]> {
         const sql = `select 
                         id, 
                         title, 
+                        description,
+                        image,
                         created_at,
-                        concluded,
-                        concluded_at
-                    from todo`;
-        return await this.db.query<TodoModel>(sql);
+                        updated_at
+                    from notes`;
+        return await this.db.query<NoteModel>(sql);
     }
 
-    async findById(id: string) : Promise<TodoModel> {
+    async findById(id: string) : Promise<NoteModel> {
         const sql = `select 
                         id, 
                         title, 
+                        description,
+                        image,
                         created_at,
-                        concluded,
-                        concluded_at
-                    from todo
+                        updated_at
+                    from notes
                     where id = $1`;
-        return await this.db.find<TodoModel>(sql, [id]);
+        return await this.db.find<NoteModel>(sql, [id]);
     }
 
-    async create (model: TodoModel) : Promise<TodoModel> {
+    async create (model: NoteModel) : Promise<NoteModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
             const binds = [
-                model.title
+                model.title,
+                model.description
             ];
-            const sql = `insert into todo(title) values($1) returning *`;
-            const todo: TodoModel = await connection.execute<TodoModel>(sql, binds);
+            const sql = `insert into notes(title, description) values($1, $2) returning *`;
+            const note: NoteModel = await connection.execute<NoteModel>(sql, binds);
             await connection.commit();
-            return todo;
+            return note;
         } catch(err) {
             if(connection) {
                 await connection.rollback();
@@ -50,27 +53,23 @@ class TodoService {
         }
     }
 
-    async update(id: string, model: TodoModel) : Promise<TodoModel> {
+    async update(id: string, model: NoteModel) : Promise<NoteModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const sql = `update todo 
-                                set id = $1,
-                                    title = $2,
-                                    concluded = $3,
-                                    concluded_at = $4
-                            where id = $5 
+            const sql = `update notes 
+                                set title = $1,
+                                    description = $2
+                            where id = $3
                             returning *`;
             const binds = [
-                model.id,
                 model.title,
-                model.concluded,
-                model.concluded_at,
-                id
+                model.description,
+                model.id
             ];
-            const todo: TodoModel = await connection.find<TodoModel>(sql, binds);
+            const note: NoteModel = await connection.find<NoteModel>(sql, binds);
             await connection.commit();
-            return todo;
+            return note;
         } catch(err) {
             if(connection) {
                 await connection.rollback();
@@ -79,16 +78,16 @@ class TodoService {
         }
     }
 
-    async delete(id: string) : Promise<TodoModel> {
+    async delete(id: string) : Promise<NoteModel> {
         let connection: Connection = null;
         try {
             connection = await this.db.transaction();
-            const sql = `delete from todo 
+            const sql = `delete from notes 
                             where id = $1 
                             returning *`;
-            const todo = await connection.execute<TodoModel>(sql, [id]);
+            const note = await connection.execute<NoteModel>(sql, [id]);
             await connection.commit();
-            return todo;
+            return note;
         } catch(err) {
             if(connection) {
                 await connection.rollback();
@@ -99,4 +98,4 @@ class TodoService {
 
 }
 
-export default TodoService;
+export default NoteService;
