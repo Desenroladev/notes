@@ -1,1 +1,1 @@
-# todo_list
+# simple notes in node js
