@@ -30,13 +30,15 @@ header input.title {
     min-width: 100%;
     color: #202124;
 } 
-header img.title {
+header button.title {
     position: absolute;
     right: 10px;
-    top: 3px;
-    height: 28px;
-    width: 28px;
+    top: 4px;
+    height: 45px;
+    width: 45px;
     padding: 10px;
+    background: url(./image.svg) center no-repeat;
+    background-size: 28px 28px;
 }
 header img.title:hover {
     background-color: #C5BBBB;
