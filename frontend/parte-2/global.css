@@ -1,0 +1,142 @@
+body {
+    background-color: #fff;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+}
+main {
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+}
+header {
+    display: flex;
+    justify-content: center;
+}
+header div.title {
+    position: relative;
+    min-width: 40%;
+    max-width: 50%;
+}
+header input.title {
+    background: #FFFFFF;
+    border: 0.5px solid #C5BBBB;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    font-size: 22px;
+    text-indent: 30px;
+    line-height: 50px;
+    min-width: 100%;
+    color: #202124;
+} 
+header button.title {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    height: 45px;
+    width: 45px;
+    padding: 10px;
+    background: url(./image.svg) center no-repeat;
+    background-size: 28px 28px;
+}
+header img.title:hover {
+    background-color: #C5BBBB;
+    opacity: 0.87;
+    border-radius: 50%;
+}
+section.main {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    max-width: 99%;
+}
+div.notes {
+    display: flex;
+    flex-direction: column;
+    width: calc(25%);
+}
+div.note {
+    background: #FFFEFE;
+    border: 0.5px solid #C5BBBB;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 15px 15px 3px 15px;
+    width: calc(100% - 20px);
+    min-height: 100px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+div.note:hover {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transform: scale(1.01);
+    transition: all 0.2s;
+}
+div.note > div.title {
+    min-height: 30px;
+}
+div.note > div.title > strong {
+    font-size: 22px;
+    line-height: 12px;
+}
+div.note > .description {
+    margin-top: 5px;
+    min-height: 30px;
+}
+div.note > .footer {
+    margin-top: 5px;
+    min-height: 10px;
+}
+div.note > div.footer > div.actions {
+    display: none;
+    flex-direction: row;
+}
+div.note:hover > div.footer > div.actions {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 0.5s;
+    display: flex;
+}
+div.note > div.footer > div.actions > div.left {
+    width: calc(50%);
+}
+div.note > div.footer > div.actions > div.rigth {
+    width: calc(50%);
+    display: flex;
+    justify-content: flex-end;
+}
+button.icon {
+    background-color: transparent;
+    height: 30px;
+    width: 30px;
+    border: none;
+    cursor: pointer;
+}
+button.icon:hover {
+    background-color: #C5BBBB;
+    opacity: 0.87;
+    border-radius: 50%;
+    transform: scale(1.1);
+}
+button.notificacao {
+    background: url(./notificacao.svg) center no-repeat;
+}
+button.image {
+    background: url(./image.svg) center no-repeat;
+}
+button.lixeira {
+    background: url(./lixeira.svg) center no-repeat;
+}
+button.outros {
+    background: url(./outros.svg) center no-repeat;
+}
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
