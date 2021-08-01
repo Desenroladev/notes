@@ -1,5 +1,5 @@
 
-class NodeComponent extends Component {
+class NoteComponent extends Component {
 
     template = `<div class="note">
                     <div class="title">
@@ -20,41 +20,32 @@ class NodeComponent extends Component {
                     </div>
                 </div>`;
 
-    constructor(model) {
+    constructor(note) {
         super();
-        this.compile();
-        this.model = model;
+        this.create();
+        this.note = note;
     }
 
-    render() {
-        this.appendByClass('title', `<strong>${this.model.title}</strong>`);
-        this.appendByClass('description', this.model.description);
+    build() {
+        this.append('.title', `<strong>${this.note.title}</strong>`);
+        this.append('.description', this.note.description);
 
-        this.addClickByClass('notificacao', function() {
+        this.click('.notificacao', function() {
             alert(`notificacao`);
         });
-        this.addClickByClass('image', function() {
+        this.click('.image', function() {
             alert(`image`);
         });
-        this.addClickByClass('lixeira', function() {
+        this.click('.lixeira', function() {
             alert(`lixeira`);
         });
-        this.addClickByClass('outros', function() {
+        this.click('.outros', function() {
             alert(`outros`);
         });
-        this.addClickByClass('note', function() {
+        this.click('.note', function() {
             alert(`note`);
         });
-        return this.element.firstChild;
+        return super.build();
     }
     
 }
-
-let model = {
-    title: 'Desvendando o Java Script', 
-    description: 'Agora vc aprende java script'
-};
-let aux = new NodeComponent(model);
-
-document.getElementById('notes1').appendChild(aux.render());
-

@@ -3,21 +3,18 @@ class NotesComponent extends Component {
 
     constructor(element, notes) {
         super();
-        this.compile();
+        this.create();
+        this.element = element;
 
         if(notes && Array.isArray(notes)) {
             notes.forEach(note => {
-                this.add(note);
+                this.add(new NoteComponent(note));
             });
         }
     }
 
     add(note) {
-        this.element.appendChild(note.render());
-    }
-
-    render() {
-        return this.element.firstChild;
+        this.element.appendChild(note.build());
     }
 
 }

@@ -37,7 +37,7 @@ header button.title {
     height: 45px;
     width: 45px;
     padding: 10px;
-    background: url(./image.svg) center no-repeat;
+    background: url(../images/image.svg) center no-repeat;
     background-size: 28px 28px;
 }
 header img.title:hover {
@@ -121,16 +121,16 @@ button.icon:hover {
     transform: scale(1.1);
 }
 button.notificacao {
-    background: url(./notificacao.svg) center no-repeat;
+    background: url(../images/notificacao.svg) center no-repeat;
 }
 button.image {
-    background: url(./image.svg) center no-repeat;
+    background: url(../images/image.svg) center no-repeat;
 }
 button.lixeira {
-    background: url(./lixeira.svg) center no-repeat;
+    background: url(../images/lixeira.svg) center no-repeat;
 }
 button.outros {
-    background: url(./outros.svg) center no-repeat;
+    background: url(../images/outros.svg) center no-repeat;
 }
 @keyframes fadeInOpacity {
 	0% {
