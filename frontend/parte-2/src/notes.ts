@@ -1,7 +1,7 @@
 
 class NotesComponent extends Component {
 
-    constructor(element, notes) {
+    constructor(element:any, notes:any[]) {
         super();
         this.create();
         this.element = element;
@@ -13,7 +13,7 @@ class NotesComponent extends Component {
         }
     }
 
-    add(note) {
+    add(note:NoteComponent) {
         this.element.appendChild(note.build());
     }
 

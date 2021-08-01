@@ -1,6 +1,9 @@
 
 class Component {
 
+    template: string =  '';
+    element: any;
+
     create() {
         let div = document.createElement('div');
         div.innerHTML = this.template;
@@ -8,19 +11,19 @@ class Component {
         return this.element;
     }
 
-    qs(selector) {
+    qs(selector:string) {
         return this.element.querySelector(selector);
     }
 
-    append(selector, content) {
+    append(selector:string, content:string) {
         let aux = this.qs(selector);
         aux.innerHTML = content;
         return aux;
     }
 
-    click(selector, callback) {
+    click(selector:string, callback:any) {
         this.qs(selector)
-            .addEventListener('click', function(evt) {
+            .addEventListener('click', (evt:any) => {
                 evt.stopPropagation();
                 evt.preventDefault();
                 callback(evt);

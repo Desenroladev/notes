@@ -20,7 +20,9 @@ class NoteComponent extends Component {
                     </div>
                 </div>`;
 
-    constructor(note) {
+    note: any;
+    
+    constructor(note:any) {
         super();
         this.create();
         this.note = note;
